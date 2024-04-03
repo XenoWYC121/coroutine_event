@@ -3,10 +3,28 @@
 //
 
 #include "coroutine_async/context/context.h"
+#include "coroutine_async/context/core.hpp"
+#include "coroutine_async/event/register_event/read_event.hpp"
 
-namespace coroutine_async
+
+#include <unistd.h>
+#include <sys/fcntl.h>
+
+namespace coroutine_async::core
 {
-    namespace core
+    context::context(unique_ptr<core> core1)
+            : black_hole_fd(open("/dev/null", O_WRONLY)),
+              timer(*this, this->black_hole_fd),
+              m_core(std::move(core1))
     {
-    } // core
-} // coroutine_async
+        this->m_core->set_black_hole(this->black_hole_fd);
+    }
+
+    void context::new_event(const event_type &new_event)
+    {
+        if (std::holds_alternative<event::read_event>(new_event))
+        {
+            this->m_core->new_read_event(get<event::read_event>(new_event));
+        }
+    }
+}

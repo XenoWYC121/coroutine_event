@@ -14,8 +14,8 @@ namespace coroutine_async::core
         this->m_cv.notify_one();
     }
 
-    async_timer::async_timer(context &context)
-            : m_context(context)
+    async_timer::async_timer(context &context, int black_hole)
+            : m_context(context), black_hole_fd(black_hole)
     {
         this->m_thread_handler = thread([this]()
                                         {

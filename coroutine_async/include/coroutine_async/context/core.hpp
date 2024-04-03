@@ -1,0 +1,34 @@
+//
+// Created by 12992 on 2024/4/3.
+//
+
+#ifndef COROUTINE_ASYNC_CORE_HPP
+#define COROUTINE_ASYNC_CORE_HPP
+
+namespace coroutine_async::event
+{
+    class read_event;
+}
+
+namespace coroutine_async::core
+{
+
+    class core
+    {
+    public:
+        explicit core(int black_hole) : black_hole(black_hole) {}
+
+        virtual ~core() = default;
+
+        void set_black_hole(int fd) { this->black_hole = fd; }
+
+        int get_black_hole() const { return this->black_hole; }
+
+        virtual void new_read_event(const event::read_event &new_event) = 0;
+
+    private:
+        int black_hole{-1};
+    };
+}
+
+#endif //COROUTINE_ASYNC_CORE_HPP

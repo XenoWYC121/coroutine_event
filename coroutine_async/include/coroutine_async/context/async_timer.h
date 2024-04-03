@@ -33,7 +33,7 @@ namespace coroutine_async::core
     class async_timer
     {
     public:
-        explicit async_timer(core::context &context);
+        async_timer(core::context &context,int black_hole);
 
         ~async_timer();
 
@@ -56,6 +56,7 @@ namespace coroutine_async::core
         atomic<bool> is_shutdown{false};
         thread m_thread_handler;
         core::context &m_context;
+        int black_hole_fd;
     };
 
 }
