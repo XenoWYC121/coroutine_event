@@ -5,9 +5,9 @@
 #ifndef COROUTINE_ASYNC_CORE_HPP
 #define COROUTINE_ASYNC_CORE_HPP
 
-namespace coroutine_async::event
+namespace coroutine_async::coroutine
 {
-    class read_event;
+    class event_coroutine;
 }
 
 namespace coroutine_async::core
@@ -24,7 +24,14 @@ namespace coroutine_async::core
 
         int get_black_hole() const { return this->black_hole; }
 
-        virtual void new_read_event(const event::read_event &new_event) = 0;
+
+        virtual void add_read(int fd, char *buffer, size_t size, const coroutine::event_coroutine &cor) = 0;
+
+        virtual void add_write(int fd, const char *buffer, size_t size, const coroutine::event_coroutine &cor) = 0;
+
+        virtual void add_accept(int fd, sockaddr_in &addr, int &sock_fd, const coroutine::event_coroutine &cor) = 0;
+
+        virtual void run() = 0;
 
     private:
         int black_hole{-1};

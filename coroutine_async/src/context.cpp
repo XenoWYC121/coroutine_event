@@ -4,10 +4,8 @@
 
 #include "coroutine_async/context/context.h"
 #include "coroutine_async/context/core.hpp"
-#include "coroutine_async/event/register_event/read_event.hpp"
 
 
-#include <unistd.h>
 #include <sys/fcntl.h>
 
 namespace coroutine_async::core
@@ -20,11 +18,4 @@ namespace coroutine_async::core
         this->m_core->set_black_hole(this->black_hole_fd);
     }
 
-    void context::new_event(const event_type &new_event)
-    {
-        if (std::holds_alternative<event::read_event>(new_event))
-        {
-            this->m_core->new_read_event(get<event::read_event>(new_event));
-        }
-    }
 }

@@ -19,6 +19,12 @@ namespace coroutine_async::coroutine
 
     event_coroutine::operator bool() const
     {
+        return !this->m_context->m_handler.done();
+    }
+
+    bool event_coroutine::operator==(const event_coroutine &cor)
+    {
+        return this->m_context.get() == cor.m_context.get();
     }
 
 }

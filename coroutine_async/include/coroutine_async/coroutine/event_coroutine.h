@@ -40,6 +40,8 @@ namespace coroutine_async::coroutine
 
         explicit operator bool() const;
 
+        bool operator==(const event_coroutine& cor);
+
     private:
         shared_ptr<context_object> m_context;
     };

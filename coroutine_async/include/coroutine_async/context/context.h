@@ -11,11 +11,6 @@
 #include <arpa/inet.h>
 #include "async_timer.h"
 
-namespace coroutine_async::event
-{
-    class read_event;
-}
-
 
 namespace coroutine_async::core
 {

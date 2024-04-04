@@ -23,18 +23,18 @@ namespace coroutine_async::event
 
     public:
         template<typename TYPE>
-        timer_event(int fd, const chrono::duration<int64_t, TYPE> &duration);
+        timer_event(int fd, coroutine::event_coroutine cor, const chrono::duration<int64_t, TYPE> &duration);
 
 
-        const chrono::system_clock::time_point& get_tp() const;
+        const chrono::system_clock::time_point &get_tp() const;
 
     private:
         chrono::system_clock::time_point tp;
     };
 
     template<typename TYPE>
-    timer_event::timer_event(int fd, const chrono::duration<int64_t, TYPE> &duration)
-            :event(fd), tp(duration + chrono::system_clock::now())
+    timer_event::timer_event(int fd, coroutine::event_coroutine cor, const chrono::duration<int64_t, TYPE> &duration)
+            :event(fd, event_type::TIMER, std::move(cor)), tp(duration + chrono::system_clock::now())
     {
     }
 
