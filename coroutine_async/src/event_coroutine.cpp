@@ -27,4 +27,9 @@ namespace coroutine_async::coroutine
         return this->m_context.get() == cor.m_context.get();
     }
 
+    void event_coroutine::set_io_context(core::context &io_context)
+    {
+        this->m_context->io_context = &io_context;
+    }
+
 }

@@ -11,6 +11,11 @@
 #include <arpa/inet.h>
 #include "async_timer.h"
 
+namespace coroutine_async::coroutine
+{
+    class event_coroutine;
+}
+
 
 namespace coroutine_async::core
 {
@@ -22,11 +27,16 @@ namespace coroutine_async::core
     public:
         context(unique_ptr<core> core1);
 
-        void add_read(int fd, char *buffer, size_t size);
+        void add_read(int fd, char *buffer, size_t size, const coroutine::event_coroutine &cor, int &error_code,
+                      size_t &res_size);
 
-        void add_write(int fd, const char *buffer, size_t size);
+        void add_write(int fd, const char *buffer, size_t size, const coroutine::event_coroutine &cor, int &error_code,
+                       size_t &res_size);
 
-        void add_accept(int fd, sockaddr_in &addr, int &sock_fd);
+        void
+        add_accept(int fd, sockaddr_in &addr, int &sock_fd, const coroutine::event_coroutine &cor, int &error_code);
+
+        void run();
 
     private:
         int black_hole_fd{-1};

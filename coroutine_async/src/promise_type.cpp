@@ -26,8 +26,19 @@ namespace coroutine_async::coroutine
         return {};
     }
 
-    suspend_always event_coroutine::promise_type::yield_value(const util::info &info1)
+    suspend_always event_coroutine::promise_type::yield_value(util::info &&info1)
     {
+        switch(info1.get_type())
+        {
+            case util::info_type::READ:
+                break;
+            case util::info_type::WRITE:
+                break;
+            case util::info_type::ACCEPT:
+                break;
+            case util::info_type::TIMER:
+                break;
+        }
         return {};
     }
 
