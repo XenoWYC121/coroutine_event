@@ -9,7 +9,10 @@
 #include <memory>
 #include <variant>
 #include <arpa/inet.h>
+#include <functional>
+
 #include "async_timer.h"
+#include "coroutine_async/coroutine/event_coroutine.h"
 
 namespace coroutine_async::coroutine
 {
@@ -37,6 +40,8 @@ namespace coroutine_async::core
         add_accept(int fd, sockaddr_in &addr, int &sock_fd, const coroutine::event_coroutine &cor, int &error_code);
 
         void run();
+
+        void start_coroutine(function<coroutine::event_coroutine()> cor);
 
     private:
         int black_hole_fd{-1};

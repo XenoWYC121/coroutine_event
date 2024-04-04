@@ -12,9 +12,12 @@
 namespace coroutine_async::core
 {
     epoll_core::epoll_core(int black_hole)
-            : core(black_hole), ep_fd(epoll_create1(1))
+            : core(black_hole), ep_fd(epoll_create(1))
     {
-
+        if (ep_fd == -1)
+        {
+            throw runtime_error(strerror(errno));
+        }
     }
 
     void epoll_core::add_read(int fd, char *buffer, size_t size, const coroutine::event_coroutine &cor, int &error_code,
@@ -64,7 +67,9 @@ namespace coroutine_async::core
         }
         else
         {
-            throw runtime_error("multi accept event error!");
+            auto copy_cor = cor;
+            this->remove_event(fd);
+            this->new_accept_event(fd, addr, sock_fd, cor, error_code);
         }
         flag = true;
     }
@@ -74,9 +79,10 @@ namespace coroutine_async::core
         while (!this->event_map.empty())
         {
             array<epoll_event, 128> events{};
-            int res = epoll_wait(this->ep_fd, &events[0], 128, 1000);
+            int res = epoll_wait(this->ep_fd, &events[0], 128, -1);
             if (res == -1)
             {
+                perror("wait");
                 throw runtime_error(strerror(errno));
             }
             for (int i = 0; i < res; i++)
@@ -231,5 +237,10 @@ namespace coroutine_async::core
         acc_event.set_sock_fd(res);
         acc_event.set_sockaddr(addr);
         acc_event.get_coroutine().resume();
+    }
+
+    void epoll_core::handle_timer_event(event::event &event1)
+    {
+
     }
 }

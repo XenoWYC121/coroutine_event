@@ -12,6 +12,8 @@
 namespace coroutine_async::util
 {
     class info;
+
+    class accept_info;
 }
 
 
@@ -27,12 +29,7 @@ namespace coroutine_async::coroutine
     struct context_object
     {
         coroutine_handle<> m_handler;
-        //core::context *io_context{};
-
-        ~context_object()
-        {
-            cout << "dtor!" << endl;
-        }
+        core::context *io_context{};
     };
 
     class event_coroutine
@@ -59,6 +56,7 @@ namespace coroutine_async::coroutine
     public:
         event_coroutine get_return_object();
 
+
         suspend_always initial_suspend() noexcept;
 
         suspend_never final_suspend() noexcept;
@@ -66,6 +64,12 @@ namespace coroutine_async::coroutine
         suspend_always yield_value(util::info &&info1);
 
         void unhandled_exception() noexcept {}
+
+    private:
+        void handle_accept(util::accept_info &info);
+
+        event_coroutine get_return_object_inside();
+
 
     private:
         shared_ptr<context_object> m_context;

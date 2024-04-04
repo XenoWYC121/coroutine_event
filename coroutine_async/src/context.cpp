@@ -8,6 +8,7 @@
 
 #include <sys/fcntl.h>
 
+
 namespace coroutine_async::core
 {
     context::context(unique_ptr<core> core1)
@@ -42,5 +43,10 @@ namespace coroutine_async::core
         this->m_core->run();
     }
 
-
+    void context::start_coroutine(function<coroutine::event_coroutine()> cor)
+    {
+        auto c1 = cor();
+        c1.set_io_context(*this);
+        c1.resume();
+    }
 }
