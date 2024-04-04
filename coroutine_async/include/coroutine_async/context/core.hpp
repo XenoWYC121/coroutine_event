@@ -25,11 +25,15 @@ namespace coroutine_async::core
         int get_black_hole() const { return this->black_hole; }
 
 
-        virtual void add_read(int fd, char *buffer, size_t size, const coroutine::event_coroutine &cor) = 0;
+        virtual void add_read(int fd, char *buffer, size_t size, const coroutine::event_coroutine &cor, int &error_code,
+                              size_t res_size) = 0;
 
-        virtual void add_write(int fd, const char *buffer, size_t size, const coroutine::event_coroutine &cor) = 0;
+        virtual void
+        add_write(int fd, const char *buffer, size_t size, const coroutine::event_coroutine &cor, int &error_code,
+                  size_t &res_size) = 0;
 
-        virtual void add_accept(int fd, sockaddr_in &addr, int &sock_fd, const coroutine::event_coroutine &cor) = 0;
+        virtual void
+        add_accept(int fd, sockaddr_in &addr, int &sock_fd, const coroutine::event_coroutine &cor, int &error_code) = 0;
 
         virtual void run() = 0;
 
