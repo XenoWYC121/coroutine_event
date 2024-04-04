@@ -7,6 +7,12 @@
 
 #include <iostream>
 #include <coroutine>
+#include <memory>
+
+namespace coroutine_async::util
+{
+    class info;
+}
 
 
 namespace coroutine_async::core
@@ -18,23 +24,41 @@ namespace coroutine_async::coroutine
 {
     using namespace std;
 
-    class promise_type;
+    struct context_object
+    {
+        coroutine_handle<> m_handler;
+    };
 
     class event_coroutine
     {
     public:
-        explicit event_coroutine(const coroutine_handle<promise_type> &obj);
+        class promise_type;
 
-        void set_fd(int fd);
-
-        void set_context(core::context& context);
+        explicit event_coroutine(shared_ptr<context_object> co_context);
 
         void resume();
 
         explicit operator bool() const;
 
     private:
-        coroutine_handle<promise_type> m_handler;
+        shared_ptr<context_object> m_context;
+    };
+
+    class event_coroutine::promise_type
+    {
+    public:
+        event_coroutine get_return_object();
+
+        suspend_always initial_suspend() noexcept;
+
+        suspend_always final_suspend() noexcept;
+
+        suspend_always yield_value(const util::info &info1);
+
+        void unhandled_exception() noexcept {}
+
+    private:
+        shared_ptr<context_object> m_context;
     };
 
 }

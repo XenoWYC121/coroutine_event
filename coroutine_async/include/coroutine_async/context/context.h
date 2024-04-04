@@ -8,6 +8,7 @@
 #include <iostream>
 #include <memory>
 #include <variant>
+#include <arpa/inet.h>
 #include "async_timer.h"
 
 namespace coroutine_async::event
@@ -20,14 +21,17 @@ namespace coroutine_async::core
 {
     class core;
 
-    using event_type = variant<event::read_event>;
 
     class context
     {
     public:
         context(unique_ptr<core> core1);
 
-        void new_event(const event_type &new_event);
+        void add_read(int fd, char *buffer, size_t size);
+
+        void add_write(int fd, const char *buffer, size_t size);
+
+        void add_accept(int fd, sockaddr_in &addr, int &sock_fd);
 
     private:
         int black_hole_fd{-1};
