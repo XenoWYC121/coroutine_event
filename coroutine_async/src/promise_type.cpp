@@ -21,7 +21,7 @@ namespace coroutine_async::coroutine
         return {};
     }
 
-    suspend_always event_coroutine::promise_type::final_suspend() noexcept
+    suspend_never event_coroutine::promise_type::final_suspend() noexcept
     {
         return {};
     }

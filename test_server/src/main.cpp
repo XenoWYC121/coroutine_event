@@ -23,8 +23,11 @@ event_coroutine hello()
 int main()
 {
     auto c = hello();
+    auto d = hello();
     c.resume();
     c.resume();
+    d.resume();
+    d.resume();
 //    coroutine_async::core::context context1;
 //    coroutine_async::core::async_timer timer(context1);
 //    timer.new_timer_event(coroutine_async::event::timer_event(10, 5s));

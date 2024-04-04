@@ -27,7 +27,7 @@ namespace coroutine_async::coroutine
     struct context_object
     {
         coroutine_handle<> m_handler;
-        core::context *io_context{};
+        //core::context *io_context{};
 
         ~context_object()
         {
@@ -61,7 +61,7 @@ namespace coroutine_async::coroutine
 
         suspend_always initial_suspend() noexcept;
 
-        suspend_always final_suspend() noexcept;
+        suspend_never final_suspend() noexcept;
 
         suspend_always yield_value(util::info &&info1);
 
