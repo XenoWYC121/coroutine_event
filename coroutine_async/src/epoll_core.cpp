@@ -186,22 +186,30 @@ namespace coroutine_async::core
         auto res = read(rd_event.get_fd(), rd_event.get_buffer(), rd_event.get_size());
         if (res < 0)
         {
-            throw runtime_error(strerror(errno));
+            //throw runtime_error(strerror(errno));
+            rd_event.set_error_code(res);
         }
-        rd_event.set_error_code(0);
+        else
+        {
+            rd_event.set_error_code(0);
+        }
         rd_event.set_res_size(res);
         rd_event.get_coroutine().resume();
     }
 
-    void epoll_core::handle_timer_event(event::event &event1)
+    void epoll_core::handle_write_event(event::event &event1)
     {
         auto &wt_event = dynamic_cast<event::write_event &>(event1);
         auto res = write(wt_event.get_fd(), wt_event.get_buffer(), wt_event.get_size());
         if (res < 0)
         {
-            throw runtime_error(strerror(errno));
+            //throw runtime_error(strerror(errno));
+            wt_event.set_error_code(res);
         }
-        wt_event.set_error_code(0);
+        else
+        {
+            wt_event.set_error_code(0);
+        }
         wt_event.set_res_size(res);
         wt_event.get_coroutine().resume();
     }
@@ -212,11 +220,14 @@ namespace coroutine_async::core
         socklen_t sock_len{0};
         sockaddr_in addr{};
         auto res = accept(acc_event.get_fd(), reinterpret_cast<sockaddr *>(&addr), &sock_len);
-        if (res <= 0)
+        if (res < 0)
         {
-            throw runtime_error(strerror(errno));
+            acc_event.set_error_code(res);
         }
-        acc_event.set_error_code(0);
+        else
+        {
+            acc_event.set_error_code(0);
+        }
         acc_event.set_sock_fd(res);
         acc_event.set_sockaddr(addr);
         acc_event.get_coroutine().resume();
