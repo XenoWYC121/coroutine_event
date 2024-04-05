@@ -7,14 +7,14 @@
 
 namespace coroutine_async::core
 {
-    void async_timer::new_timer_event(const event::timer_event &event)
+    void async_timer::new_timer_event(const event::timer_event& event)
     {
         lock_guard guard(this->m_lock_heap);
         this->m_heap.push(event);
         this->m_cv.notify_one();
     }
 
-    async_timer::async_timer(context &context, int black_hole)
+    async_timer::async_timer(context& context, int black_hole)
             : m_context(context), black_hole_fd(black_hole)
     {
         this->m_thread_handler = thread([this]()
@@ -37,6 +37,14 @@ namespace coroutine_async::core
                             return this->is_stop || this->is_shutdown || !this->m_heap.empty();
                         });
             }
+            if (this->is_shutdown)
+            {
+                return;
+            }
+            if (this->is_stop && this->m_heap.empty())
+            {
+                return;
+            }
             auto res = this->m_cv.wait_until(lock, this->m_heap.top().get_tp());
             if (this->is_shutdown)
             {
@@ -58,7 +66,7 @@ namespace coroutine_async::core
         }
     }
 
-    void async_timer::notify_context(const event::timer_event &event)
+    void async_timer::notify_context(const event::timer_event& event)
     {
         cout << "timeout!" << endl;
     }

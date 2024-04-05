@@ -57,14 +57,14 @@ namespace coroutine_async::util
             : public info
     {
     public:
-        read_info(int fd, char* buffer, size_t& size, int& ec, size_t res_size)
-                : info(info_type::READ), fd(fd), buffer(buffer), size(&size), ec(&ec), res_size(&res_size) {}
+        read_info(int fd, char* buffer, size_t size, int& ec, size_t& res_size)
+                : info(info_type::READ), fd(fd), buffer(buffer), size(size), ec(&ec), res_size(&res_size) {}
 
         int get_fd() const { return this->fd; }
 
         char* get_buffer() { return this->buffer; }
 
-        size_t& get_size() { return *this->size; }
+        size_t get_size() const { return this->size; }
 
         int& get_ec() { return *this->ec; }
 
@@ -73,7 +73,7 @@ namespace coroutine_async::util
     private:
         int fd;
         char* buffer;
-        size_t* size;
+        size_t size;
         int* ec;
         size_t* res_size;
     };

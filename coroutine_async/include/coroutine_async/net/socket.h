@@ -16,6 +16,8 @@ namespace coroutine_async::core
 namespace coroutine_async::util
 {
     class info;
+    class read_info;
+    class write_info;
 }
 
 namespace coroutine_async::net
@@ -30,7 +32,7 @@ namespace coroutine_async::net
     public:
         socket(core::context& context);
 
-        util::info async_read(char* buffer, size_t size, int ec, size_t res_size);
+        util::read_info async_read(char* buffer, size_t size, int & ec, size_t & res_size);
 
         util::info async_write(const char* buffer, size_t size, int ec, size_t res_size);
 

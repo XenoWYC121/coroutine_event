@@ -26,7 +26,7 @@ namespace coroutine_async::core
 
 
         virtual void add_read(int fd, char *buffer, size_t size, const coroutine::event_coroutine &cor, int &error_code,
-                              size_t res_size) = 0;
+                              size_t & res_size) = 0;
 
         virtual void
         add_write(int fd, const char *buffer, size_t size, const coroutine::event_coroutine &cor, int &error_code,

@@ -30,7 +30,7 @@ namespace coroutine_async::core
         explicit epoll_core(int black_hole);
 
         void add_read(int fd, char *buffer, size_t size, const coroutine::event_coroutine &cor, int &error_code,
-                      size_t res_size) override;
+                      size_t & res_size) override;
 
         void add_write(int fd, const char *buffer, size_t size, const coroutine::event_coroutine &cor, int &error_code,
                        size_t &res_size) override;

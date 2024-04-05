@@ -3,7 +3,8 @@
 //
 
 #include "coroutine_async/net/socket.h"
-
+#include "coroutine_async/util/info.hpp"
+#include <iostream>
 
 namespace coroutine_async::net
 {
@@ -11,9 +12,15 @@ namespace coroutine_async::net
             : m_context(&context),
               sock_fd(new int(-1), [](const int* ptr) -> void
               {
-                  delete ptr;
+                  close(*ptr);
+                  std::cout << "connection close" << std::endl;
               })
     {
 
+    }
+
+    util::read_info socket::async_read(char* buffer, size_t size, int& ec, size_t& res_size)
+    {
+        return {*this->sock_fd, buffer, size, ec, res_size};
     }
 }

@@ -27,24 +27,21 @@ namespace coroutine_async::coroutine
         return {};
     }
 
-    suspend_always event_coroutine::promise_type::yield_value(util::info &&info1)
+    suspend_always event_coroutine::promise_type::yield_value(util::info&& info1)
     {
         switch (info1.get_type())
         {
-            case util::info_type::READ:
+            case util::info_type::READ:this->handle_read(dynamic_cast<util::read_info&>(info1));
                 break;
-            case util::info_type::WRITE:
+            case util::info_type::WRITE:break;
+            case util::info_type::ACCEPT:this->handle_accept(dynamic_cast<util::accept_info&>(info1));
                 break;
-            case util::info_type::ACCEPT:
-                this->handle_accept(dynamic_cast<util::accept_info &>(info1));
-                break;
-            case util::info_type::TIMER:
-                break;
+            case util::info_type::TIMER:break;
         }
         return {};
     }
 
-    void event_coroutine::promise_type::handle_accept(util::accept_info &info)
+    void event_coroutine::promise_type::handle_accept(util::accept_info& info)
     {
         this->m_context->io_context->add_accept(info.get_fd(), info.get_sock_addr(), info.get_sock_fd(),
                                                 this->get_return_object_inside(), info.get_ec());
@@ -53,6 +50,12 @@ namespace coroutine_async::coroutine
     event_coroutine event_coroutine::promise_type::get_return_object_inside()
     {
         return event_coroutine(this->m_context);
+    }
+
+    void event_coroutine::promise_type::handle_read(util::read_info& info)
+    {
+        this->m_context->io_context->add_read(info.get_fd(), info.get_buffer(), info.get_size(),
+                                              this->get_return_object_inside(), info.get_ec(), info.get_res_size());
     }
 
 }

@@ -14,6 +14,8 @@ namespace coroutine_async::util
     class info;
 
     class accept_info;
+
+    class read_info;
 }
 
 
@@ -67,6 +69,8 @@ namespace coroutine_async::coroutine
 
     private:
         void handle_accept(util::accept_info &info);
+
+        void handle_read(util::read_info& info);
 
         event_coroutine get_return_object_inside();
 
