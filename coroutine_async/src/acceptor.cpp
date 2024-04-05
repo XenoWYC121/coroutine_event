@@ -38,6 +38,6 @@ namespace coroutine_async::net
 
     util::accept_info acceptor::async_accept(net::socket &socket1, int &ec)
     {
-        return {this->acc_fd, socket1.addr, socket1.sock_fd, ec};
+        return {this->acc_fd, socket1.addr, *socket1.sock_fd, ec};
     }
 }

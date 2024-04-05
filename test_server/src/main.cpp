@@ -21,9 +21,9 @@ int main()
     using namespace coroutine_async;
     core::context context1(make_unique<core::epoll_core>(0));
     net::acceptor acceptor1(context1, "0.0.0.0", 25444);
-    context1.start_coroutine([&acceptor1]() -> coroutine::event_coroutine
+    context1.start_coroutine([&acceptor1,&context1]() -> coroutine::event_coroutine
                              {
-                                 net::socket n1{};
+                                 net::socket n1{context1};
                                  int ec{0};
                                  co_yield acceptor1.async_accept(n1, ec);
                                  cout << "get new connection!" << endl;

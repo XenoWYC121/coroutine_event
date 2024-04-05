@@ -4,7 +4,19 @@
 
 #ifndef COROUTINE_ASYNC_SOCKET_H
 #define COROUTINE_ASYNC_SOCKET_H
+
 #include <arpa/inet.h>
+#include <memory>
+
+namespace coroutine_async::core
+{
+    class context;
+}
+
+namespace coroutine_async::util
+{
+    class info;
+}
 
 namespace coroutine_async::net
 {
@@ -16,10 +28,16 @@ namespace coroutine_async::net
         friend class acceptor;
 
     public:
+        socket(core::context& context);
+
+        util::info async_read(char* buffer, size_t size, int ec, size_t res_size);
+
+        util::info async_write(const char* buffer, size_t size, int ec, size_t res_size);
 
     private:
+        core::context* m_context;
         sockaddr_in addr;
-        int sock_fd;
+        std::shared_ptr<int> sock_fd;
     };
 }
 

@@ -7,4 +7,13 @@
 
 namespace coroutine_async::net
 {
+    socket::socket(core::context& context)
+            : m_context(&context),
+              sock_fd(new int(-1), [](const int* ptr) -> void
+              {
+                  delete ptr;
+              })
+    {
+
+    }
 }
