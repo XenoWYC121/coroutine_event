@@ -78,6 +78,31 @@ namespace coroutine_async::util
         size_t* res_size;
     };
 
+    class write_info
+            : public info
+    {
+    public:
+        write_info(int fd, const char* buffer, size_t size, int& ec, size_t& res_size)
+                : info(info_type::WRITE), fd(fd), buffer(buffer), size(size), ec(&ec), res_size(&res_size) {}
+
+        int get_fd() const { return this->fd; }
+
+        const char* get_buffer() const { return this->buffer; }
+
+        size_t get_size() const { return this->size; }
+
+        int& get_ec() { return *this->ec; }
+
+        size_t& get_res_size() { return *this->res_size; }
+
+    private:
+        int fd;
+        const char* buffer;
+        size_t size;
+        int* ec;
+        size_t* res_size;
+    };
+
 }
 
 #endif //COROUTINE_ASYNC_INFO_HPP

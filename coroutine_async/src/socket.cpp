@@ -23,4 +23,9 @@ namespace coroutine_async::net
     {
         return {*this->sock_fd, buffer, size, ec, res_size};
     }
+
+    util::write_info socket::async_write(const char* buffer, size_t size, int ec, size_t res_size)
+    {
+        return {*this->sock_fd, buffer, size, ec, res_size};
+    }
 }

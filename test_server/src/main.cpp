@@ -34,6 +34,7 @@ int main()
                                          size_t size1{0};
                                          co_yield n1.async_read(buffer, sizeof(buffer), ec, size1);
                                          cout << "got new msg : " << string_view(buffer, size1) << endl;
+                                         co_yield n1.async_write(buffer, size1, ec, size1);
                                      }
                                  }
                              });

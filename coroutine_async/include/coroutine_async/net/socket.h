@@ -34,7 +34,7 @@ namespace coroutine_async::net
 
         util::read_info async_read(char* buffer, size_t size, int & ec, size_t & res_size);
 
-        util::info async_write(const char* buffer, size_t size, int ec, size_t res_size);
+        util::write_info async_write(const char* buffer, size_t size, int ec, size_t res_size);
 
     private:
         core::context* m_context;

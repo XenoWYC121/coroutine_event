@@ -33,7 +33,8 @@ namespace coroutine_async::coroutine
         {
             case util::info_type::READ:this->handle_read(dynamic_cast<util::read_info&>(info1));
                 break;
-            case util::info_type::WRITE:break;
+            case util::info_type::WRITE:this->handle_write(dynamic_cast<util::write_info&>(info1));
+                break;
             case util::info_type::ACCEPT:this->handle_accept(dynamic_cast<util::accept_info&>(info1));
                 break;
             case util::info_type::TIMER:break;
@@ -56,6 +57,12 @@ namespace coroutine_async::coroutine
     {
         this->m_context->io_context->add_read(info.get_fd(), info.get_buffer(), info.get_size(),
                                               this->get_return_object_inside(), info.get_ec(), info.get_res_size());
+    }
+
+    void event_coroutine::promise_type::handle_write(util::write_info& info)
+    {
+        this->m_context->io_context->add_write(info.get_fd(), info.get_buffer(), info.get_size(),
+                                               this->get_return_object_inside(), info.get_ec(), info.get_res_size());
     }
 
 }
